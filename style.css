@@ -1,0 +1,73 @@
+body {
+    margin: 40px auto;
+    max-width: 650px;
+    line-height: 1.6;
+    font-size: 18px;
+    color: #444;
+    padding: 0 10px
+}
+
+h1, h2, h3 {
+    line-height: 1.2
+}
+
+.main {
+    margin: 20px;
+}
+
+.chessboard {
+    width: 512px;
+    height: 512px;
+    border: 1px #000 solid;
+    margin: 20px 0;
+}
+
+.row {
+}
+
+.square {
+    width: 64px;
+    height: 64px;
+    float: left;
+}
+
+.black {
+    background-color: #808080;
+}
+
+.clear {
+    clear: both;
+}
+
+.coordinates {
+    float: left;
+    font-size: 8pt;
+    color: #444;
+    padding: 5px;
+    float: right;
+}
+
+.piece {
+    float: left;
+    font-size: 40pt;
+    float: left;
+    margin-left: 5px;
+    margin-top: -8px;
+    color: #000;
+    cursor: pointer;
+}
+
+.selected {
+    background-color: yellow;
+}
+
+[draggable] {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    /* Required to make elements draggable in old WebKit */
+    -khtml-user-drag: element;
+    -webkit-user-drag: element;
+}
+

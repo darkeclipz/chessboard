@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Chess</title>
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+    <div id="app" class="main">
+        <h1>Chessboard</h1>
+        This is a demo app that is created with Typescript and Vue.js.
+        <div class="chessboard">
+            <div v-for="i in board.rows" class="row">
+                <div :id="index({x: i-1, y: j-1 })" v-for="j in board.columns" class="square" v-bind:class="{ black: (i+j) % 2 != 0, selected: index({x: i-1, y: j-1 }) == selectedSquare }" v-on:click="select($event)">
+                    <div v-if="!board.isEmpty({x: i-1, y: j-1 })">
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 0 && board.get({x: i-1, y: j-1 }).player == 0" class="piece">♙</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 0 && board.get({x: i-1, y: j-1 }).player == 1" class="piece">♟</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 1 && board.get({x: i-1, y: j-1 }).player == 0" class="piece">♘</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 1 && board.get({x: i-1, y: j-1 }).player == 1" class="piece">♞</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 2 && board.get({x: i-1, y: j-1 }).player == 0" class="piece">♗</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 2 && board.get({x: i-1, y: j-1 }).player == 1" class="piece">♝</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 3 && board.get({x: i-1, y: j-1 }).player == 0" class="piece">♖</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 3 && board.get({x: i-1, y: j-1 }).player == 1" class="piece">♜</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 4 && board.get({x: i-1, y: j-1 }).player == 0" class="piece">♕</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 4 && board.get({x: i-1, y: j-1 }).player == 1" class="piece">♛</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 5 && board.get({x: i-1, y: j-1 }).player == 0" class="piece">♔</div>
+                        <div v-if="board.get({x: i-1, y: j-1 }).type == 5 && board.get({x: i-1, y: j-1 }).player == 1" class="piece">♚</div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        Current player: 
+            <span v-if="currentPlayer == 0">White</span> 
+            <span v-if="currentPlayer == 1">Black</span> <br/>
+        Selected square: 
+            <span v-if="selectedSquare">{{ selectedSquare }}</span>
+            <span v-else>None</span> <br/>
+        Info message:
+            {{ infoMessage }}
+        <br/>
+        <button v-on:click="reset()">Reset the game</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="board.js"></script>
+    <script>
+        let app = new Vue({
+            el: '#app',
+            data: {
+                board: new Chessboard(),
+                currentPlayer: 0,
+                selectedSquare: null,
+                infoMessage: "White starts!"
+            },
+            methods: {
+                select: function (event) {
+
+                    let index = event.currentTarget.id;
+
+                    if (this.board.board[index].piece === undefined && !this.selectedSquare) {
+                        this.infoMessage = "Invalid square!";
+                        return;
+                    }
+
+                    if (!this.selectedSquare && this.board.board[index].piece.player != this.currentPlayer) {
+                        this.infoMessage = "Invalid player!";
+                        return;
+                    }
+
+                    if (this.selectedSquare == index) {
+                        this.infoMessage = "Unselected piece!";
+                        this.selectedSquare = null;
+                        return;
+                    }
+
+                    if (this.selectedSquare) {
+
+                        let result = this.board.move(this.board.point(this.selectedSquare), this.board.point(index), this.currentPlayer);
+                        if (result) {
+                            this.infoMessage = result;
+                            return;
+                        }
+                        
+                        this.selectedSquare = null;
+                        this.currentPlayer = (this.currentPlayer + 1) % 2;
+                        this.infoMessage = "Moved to " + index;
+                        return;
+                    }
+
+                    this.selectedSquare = index;
+                },
+                index: function (x, y) {
+                    return this.board.index(x, y);
+                },
+                reset: function () {
+                    this.board = new Chessboard();
+                    this.currentPlayer = 0;
+                    this.infoMessage = "White starts!";
+                    this.selectedSquare = null;
+                    console.log("Resetted the board.");
+                }
+            }
+        })
+    </script>
+</body>
+</html>

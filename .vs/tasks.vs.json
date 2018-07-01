@@ -1,0 +1,25 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "task-playercolor",
+      "appliesTo": "playercolor.ts",
+      "type": "launch"
+    },
+    {
+      "taskName": "task-point",
+      "appliesTo": "point.ts",
+      "type": "launch"
+    },
+    {
+      "taskName": "task-point",
+      "appliesTo": "point.ts",
+      "type": "launch"
+    },
+    {
+      "taskName": "task-enums",
+      "appliesTo": "enums.ts",
+      "type": "launch"
+    }
+  ]
+}
